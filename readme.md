@@ -105,34 +105,11 @@ Example: `{'deep.nested.value': 10000, 'loaded': 30000}` would persist a state t
 Persist the entire state tree indefinitely:
 
 ```js
-import { connect } from 'react-redux';
-import Widget from '../components/Widget';
-​import { increaseCount } from '../actions';
-
-
-const mapStateToProps = (state, props) => {
-  let def = {
+let initialState = {
     count: 0,
     loaded: false,
-    persist: true,
-  };
-
-  return {...def, ...state, ...props};
-}
-​
-
-const mapDispatchToProps = (dispatch, props) => {
-  return {
-    onClick: () => {
-        let { count = 0 } = props;
-        count += 1;
-        dispatch(increaseCount(count));
-    }
-  }
-}
-
-​
-export default connect(mapStateToProps, mapDispatchToProps)(Widget);
+    persist: true
+};
 ```
 
 ### Simple Usage with Expiration
@@ -140,7 +117,7 @@ Persist the entire state tree for 10 seconds:
 
 ```js
 ...
-let def = {
+let initialState = {
   count: 0,
   loaded: false,
   persist: 10000,
@@ -154,7 +131,7 @@ Persist only `deep.nested.value` and `loaded` values indefinitely:
 
 ```js
 ...
-let def = {
+let initialState = {
   count: 0,
   loaded: false,
   deep: {
@@ -173,7 +150,7 @@ Persist only the `deep.nested.value` for 10 seconds, `loaded` for 5 seconds, and
 
 ```js
 ...
-let def = {
+let initialState = {
   count: 0,
   loaded: false,
   deep: {
