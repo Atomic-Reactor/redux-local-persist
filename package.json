@@ -1,6 +1,6 @@
 {
   "name": "redux-local-persist",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Redux middleware for selectively loading and saving state to localStorage.",
   "main": "lib/index.js",
   "scripts": {
