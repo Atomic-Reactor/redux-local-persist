@@ -33,8 +33,28 @@ If the `initialState` is persisting the `text` property, it will be saved to loc
 
 ## Methods
 
-### clear()
+### clear({ properites:String|Array [Optional] })
 Clears the Redux Local Persist values from localStorage.
+```js
+    // Given the state:
+
+    let initialState = {
+        count: 0,
+        deep: {
+            nested: {
+                value: 123
+            }
+        },
+        loaded: true,
+        persist: true,
+    };
+
+    ...
+
+    clear();                                // returns: {}
+    clear('deep.nested.value');             // returns: {count: 0, loaded: true}
+    clear(['count', 'deep.nested.value']);  // returns: {loaded: true}
+```
 
 ### load({ intialState:Object })
 Gets the Redux Local Persist values from localStorage. If the values have expired, the initialState value is used.
@@ -105,11 +125,13 @@ Example: `{'deep.nested.value': 10000, 'loaded': 30000}` would persist a state t
 Persist the entire state tree indefinitely:
 
 ```js
+...
 let initialState = {
     count: 0,
     loaded: false,
     persist: true
 };
+...
 ```
 
 ### Simple Usage with Expiration

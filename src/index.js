@@ -122,9 +122,34 @@ export const load = ({initialState = {}}) => {
 };
 
 // Clear stored state and expires
-export const clear = () => {
-    localStorage.removeItem(`${RLP.NS}-state`);
-    localStorage.removeItem(`${RLP.NS}-expire`);
+export const clear = (keys) => {
+
+    if (!keys) {
+        localStorage.removeItem(`${RLP.NS}-state`);
+        localStorage.removeItem(`${RLP.NS}-expire`);
+
+        return {};
+
+    } else {
+        let keys = (typeof keys === 'string') ? [keys] : keys;
+            keys = (!_.isArray(keys)) ? [keys] : keys;
+
+        let state = localStorage.getItem(`${RLP.NS}-state`) || '{}';
+            state = JSON.parse(state);
+
+        let expires = localStorage.removeItem(`${RLP.NS}-expire`) || '{}';
+            expires = JSON.parse(expires);
+
+        keys.forEach((key) => {
+            op.del(state, key);
+            delete expires[key];
+        });
+
+        localStorage.setItem(`${RLP.NS}-state`, JSON.stringify(state));
+        localStorage.setItem(`${RLP.NS}-expire`, JSON.stringify(expires));
+
+        return state;
+    }
 };
 
 export default {
