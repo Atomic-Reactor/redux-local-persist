@@ -161,7 +161,7 @@ let initialState = {
   persist: {
       'deep.nested.value': 10000,
       'loaded': 5000,
-      'count': 0
+      'count': true
   },
 };
 ...

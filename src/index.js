@@ -59,8 +59,8 @@ export const save = () => store => next => action => {
         if (isObject(persist)) {
 
             _.keys(persist).forEach((k) => {
-                let when = Number(persist[k]);
-                if (when === 0) { return; }
+                let when = persist[k];
+                if (Number(when) === 0 || when === true) { return; }
 
                 expires[`${key}.${k}`] = moment().add(when).toISOString();
             });
