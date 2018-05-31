@@ -36,8 +36,8 @@ If the `initialState` is persisting the `text` property, it will be saved to loc
 ### clear({ properites:String|Array [Optional] })
 Clears the Redux Local Persist values from localStorage.
 ```js
-    // Given the state:
-
+/**
+ * Given the state:
     let initialState = {
         count: 0,
         deep: {
@@ -48,12 +48,14 @@ Clears the Redux Local Persist values from localStorage.
         loaded: true,
         persist: true,
     };
+ */
 
-    ...
+...
+import { clear } from 'redux-local-persist';
 
-    clear();                                // returns: {}
-    clear('deep.nested.value');             // returns: {count: 0, loaded: true}
-    clear(['count', 'deep.nested.value']);  // returns: {loaded: true}
+clear();                                // returns: {}
+clear('deep.nested.value');             // returns: {count: 0, loaded: true}
+clear(['count', 'deep.nested.value']);  // returns: {loaded: true}
 ```
 
 ### load({ intialState:Object })
