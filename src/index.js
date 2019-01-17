@@ -21,8 +21,13 @@ const isObject = (o) => {
     return o instanceof Object && o.constructor === Object;
 };
 
+const ls = (typeof window !== 'undefined') ? window.localStorage : {
+    getItem: () => {},
+    removeItem: () => {},
+    setItem: () => {},
+};
 
-// Save state to localStorage
+// Save state to ls
 export const save = () => store => next => action => {
 
     next(action);
@@ -85,25 +90,25 @@ export const save = () => store => next => action => {
         }
     });
 
-    localStorage.setItem(`${RLP.NS}-state`, JSON.stringify(newState));
-    localStorage.setItem(`${RLP.NS}-expire`, JSON.stringify(expires));
+    ls.setItem(`${RLP.NS}-state`, JSON.stringify(newState));
+    ls.setItem(`${RLP.NS}-expire`, JSON.stringify(expires));
 };
 
 
-// Load state from localStorage
+// Load state from ls
 export const load = ({initialState = {}}) => {
 
-    // Get the localStorage state
-    let state    = localStorage.getItem(`${RLP.NS}-state`) || '{}';
+    // Get the ls state
+    let state    = ls.getItem(`${RLP.NS}-state`) || '{}';
         state    = JSON.parse(state);
 
-    // Get the localStorage expires
-    let expires  = localStorage.getItem(`${RLP.NS}-expire`) || '{}';
+    // Get the ls expires
+    let expires  = ls.getItem(`${RLP.NS}-expire`) || '{}';
         expires  = JSON.parse(expires);
 
     // Only validate if expires.length > 0
     if (_.keys(expires).length > 0) {
-        let newState = {...state};
+        let newState = Object.assign({}, state);
 
         _.keys(expires).forEach((k) => {
             let exp  = moment(expires[k]);
@@ -125,8 +130,8 @@ export const load = ({initialState = {}}) => {
 export const clear = (keys) => {
 
     if (!keys) {
-        localStorage.removeItem(`${RLP.NS}-state`);
-        localStorage.removeItem(`${RLP.NS}-expire`);
+        ls.removeItem(`${RLP.NS}-state`);
+        ls.removeItem(`${RLP.NS}-expire`);
 
         return {};
 
@@ -134,10 +139,10 @@ export const clear = (keys) => {
         let keys = (typeof keys === 'string') ? [keys] : keys;
             keys = (!_.isArray(keys)) ? [keys] : keys;
 
-        let state = localStorage.getItem(`${RLP.NS}-state`) || '{}';
+        let state = ls.getItem(`${RLP.NS}-state`) || '{}';
             state = JSON.parse(state);
 
-        let expires = localStorage.removeItem(`${RLP.NS}-expire`) || '{}';
+        let expires = ls.removeItem(`${RLP.NS}-expire`) || '{}';
             expires = JSON.parse(expires);
 
         keys.forEach((key) => {
@@ -145,8 +150,8 @@ export const clear = (keys) => {
             delete expires[key];
         });
 
-        localStorage.setItem(`${RLP.NS}-state`, JSON.stringify(state));
-        localStorage.setItem(`${RLP.NS}-expire`, JSON.stringify(expires));
+        ls.setItem(`${RLP.NS}-state`, JSON.stringify(state));
+        ls.setItem(`${RLP.NS}-expire`, JSON.stringify(expires));
 
         return state;
     }
