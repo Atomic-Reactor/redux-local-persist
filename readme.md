@@ -1,5 +1,7 @@
 # Redux Local Persist
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Atomic-Reactor/redux-local-persist.svg)](https://greenkeeper.io/)
+
 Redux middleware for selectively loading and saving state to localStorage.
 Redux Local Persist allows you to add a `persist` property to your Redux state that will specify how the defined values are saved in localStorage.
 
